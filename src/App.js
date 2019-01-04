@@ -15,15 +15,56 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      words: spanishWords
+      words: spanishWords,
+      inputSpanish: '',
+      inputEnglish: ''
     };
   }
+
+  handleChange = event => {
+    event.preventDefault();
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  };
+
+  updateWords = event => {
+    event.preventDefault();
+    this.setState({
+      words: [
+        ...this.state.words,
+        `${this.state.inputSpanish}:${this.state.inputEnglish}`
+      ]
+    });
+  };
+
   render() {
-    let random = Math.floor(Math.random() * spanishWords.length) + 1;
+    let random = Math.floor(Math.random() * spanishWords.length);
+    // console.log(this.state.words);
+    // console.log('Inputs:', this.state.inputSpanish, this.state.inputEnglish);
     return (
       <div className="App">
         <div className="Container">
-          <h1>{this.state.words[random - 1]}</h1>
+          <h1>{this.state.words[random]}</h1>
+          <div className="inputs">
+            <form>
+              <input
+                placeholder="Enter Spanish word.."
+                onChange={this.handleChange}
+                name="inputSpanish"
+              />
+              <input
+                placeholder="Enter translation.."
+                onChange={this.handleChange}
+                name="inputEnglish"
+              />
+              <input
+                className="button"
+                type="submit"
+                onClick={this.updateWords}
+              />
+            </form>
+          </div>
         </div>
       </div>
     );
